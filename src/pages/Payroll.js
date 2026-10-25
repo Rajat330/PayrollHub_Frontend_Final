@@ -1,5 +1,3 @@
-
-
 import { useCallback, useEffect, useState } from "react";
 
 const API = "https://payrollhub-backend-final.onrender.com";
@@ -154,6 +152,7 @@ const createPayroll = async (event) => {
   const allowances = Number(form.allowances);
   const deductions = Number(form.deductions);
   const gross = basic + allowances;
+  const netSalary = gross - deductions;
 
   if (deductions > gross) {
     setError("Deductions cannot exceed gross salary.");
@@ -175,6 +174,8 @@ const createPayroll = async (event) => {
         basicSalary: basic,
         allowances,
         deductions,
+        grossSalary: gross,
+        netSalary,
       }),
     });
 
@@ -288,6 +289,8 @@ const createPayroll = async (event) => {
             basicSalary,
             allowances,
             deductions,
+            grossSalary,
+            netSalary,
           }),
         }
       );
