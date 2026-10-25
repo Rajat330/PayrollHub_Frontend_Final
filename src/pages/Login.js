@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const API = "https://payrollhub-backend-final.onrender.com";
+
 function Login() {
   const navigate = useNavigate();
 
@@ -10,7 +12,6 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // JavaScript validation
   const validateForm = () => {
     const cleanEmail = email.trim();
 
@@ -45,7 +46,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://payrollhub-backend-final.onrender.com/api/login", {
+      const response = await fetch(`${API}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +60,20 @@ function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.message || "Login failed.");
+      }
+
+      if (!data.token || !data.user) {
+        throw new Error(
+          "Invalid login response. Check the backend login API."
+        );
+      }
+
+      if (
+        data.user.role !== "admin" &&
+        data.user.role !== "employee"
+      ) {
+        throw new Error("Unknown user role.");
       }
 
       localStorage.setItem("token", data.token);
@@ -67,19 +81,19 @@ function Login() {
 
       if (data.user.role === "admin") {
         navigate("/admin-dashboard", { replace: true });
-      } else if (data.user.role === "employee") {
-        navigate("/employee-dashboard", { replace: true });
       } else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        throw new Error("Unknown user role");
+        navigate("/employee-dashboard", { replace: true });
       }
     } catch (err) {
-      setError(
-        err.message === "Failed to fetch"
-          ? "Cannot connect to the server. Please try again."
-          : err.message
-      );
+      console.error("Login error:", err);
+
+      if (err instanceof TypeError) {
+        setError(
+          "Cannot connect to the server. Check the backend URL, CORS settings, and Render service."
+        );
+      } else {
+        setError(err.message || "Unable to log in. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -95,7 +109,9 @@ function Login() {
             </div>
             <div>
               <h1 className="text-2xl font-black">PayrollHub</h1>
-              <p className="text-sm text-blue-300">Payroll Management</p>
+              <p className="text-sm text-blue-300">
+                Payroll Management
+              </p>
             </div>
           </div>
 
@@ -107,13 +123,13 @@ function Login() {
           </h2>
 
           <p className="mt-6 leading-7 text-slate-300">
-            Sign in to manage employees, track attendance and access your
-            payroll dashboard.
+            Sign in to manage employees, track attendance and access
+            your payroll dashboard.
           </p>
 
           <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-5">
             <p className="text-sm leading-6 text-slate-300">
-              “Simplifying payroll, empowering businesses.”
+              "Simplifying payroll, empowering businesses."
             </p>
           </div>
         </div>
@@ -146,7 +162,7 @@ function Login() {
 
               <input
                 id="login-email"
-                type="text"
+                type="email"
                 inputMode="email"
                 value={email}
                 onChange={(e) => {
@@ -155,6 +171,7 @@ function Login() {
                 }}
                 placeholder="you@example.com"
                 autoComplete="email"
+                required
                 className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
             </div>
@@ -177,6 +194,7 @@ function Login() {
                 }}
                 placeholder="Enter your password"
                 autoComplete="current-password"
+                required
                 className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
             </div>
@@ -193,7 +211,9 @@ function Login() {
             <div className="text-right">
               <button
                 type="button"
-                onClick={() => alert("Forgot password will be added later.")}
+                onClick={() =>
+                  alert("Forgot password will be added later.")
+                }
                 className="text-sm font-bold text-blue-600 hover:text-blue-800"
               >
                 Forgot Password?
