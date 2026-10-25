@@ -59,7 +59,7 @@ useEffect(() => {
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/admin/attendance?date=${selectedDate}`,
+        `https://payrollhub-backend-final.onrender.com/api/admin/attendance?date=${selectedDate}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -250,7 +250,7 @@ async function handleSubmit(event) {
     }
 
     const response = await fetch(
-      "http://localhost:5000/api/admin/attendance",
+      "https://payrollhub-backend-final.onrender.com/api/admin/attendance",
       {
         method: "POST",
         headers: {

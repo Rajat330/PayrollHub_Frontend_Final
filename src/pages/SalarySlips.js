@@ -1,7 +1,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://payrollhub-backend-final.onrender.com";
 
 function SalarySlips() {
   const [records, setRecords] = useState([]);

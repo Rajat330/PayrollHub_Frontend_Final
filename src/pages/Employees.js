@@ -81,7 +81,7 @@ function Employees() {
 
       const response = await fetch(
 
-        "http://localhost:5000/api/get-user",
+        "https://payrollhub-backend-final.onrender.com/api/get-user",
 
         {
 
@@ -442,8 +442,8 @@ async function handleSubmit(event) {
     const isEditing = Boolean(editingId);
 
     const url = isEditing
-      ? `http://localhost:5000/api/admin/employees/${editingId}`
-      : "http://localhost:5000/api/admin/employees";
+      ? `https://payrollhub-backend-final.onrender.com/api/admin/employees/${editingId}`
+      : "https://payrollhub-backend-final.onrender.com/api/admin/employees";
 
     const response = await fetch(url, {
       method: isEditing ? "PUT" : "POST",
@@ -524,7 +524,7 @@ async function confirmDelete() {
     }
 
     const response = await fetch(
-      `http://localhost:5000/api/admin/employees/${deleteTarget.id}`,
+      `https://payrollhub-backend-final.onrender.com/api/admin/employees/${deleteTarget.id}`,
       {
         method: "DELETE",
         headers: {

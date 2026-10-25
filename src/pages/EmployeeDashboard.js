@@ -6,7 +6,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://payrollhub-backend-final.onrender.com";
 
 function EmployeeDashboard() {
   const navigate = useNavigate();

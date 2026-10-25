@@ -36,7 +36,7 @@ useEffect(() => {
     try {
       // Fetch employee directory
       const employeeResponse = await fetch(
-        "http://localhost:5000/api/get-user",
+        "https://payrollhub-backend-final.onrender.com/api/get-user",
         { headers }
       );
 
@@ -55,7 +55,7 @@ useEffect(() => {
 
       // Fetch today's attendance
       const attendanceResponse = await fetch(
-        `http://localhost:5000/api/admin/attendance?date=${date}`,
+        `https://payrollhub-backend-final.onrender.com/api/admin/attendance?date=${date}`,
         { headers }
       );
 
@@ -79,7 +79,7 @@ useEffect(() => {
 
       // Fetch pending leave requests
       const leaveResponse = await fetch(
-        "http://localhost:5000/api/admin/leaves?status=Pending",
+        "https://payrollhub-backend-final.onrender.com/api/admin/leaves?status=Pending",
         { headers }
       );
 
